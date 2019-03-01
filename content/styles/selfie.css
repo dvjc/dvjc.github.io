@@ -1,0 +1,40 @@
+/* Move down content because we have a fixed navbar that is 3.5em tall */
+
+div.endashed {
+    top: 50%;
+}
+
+.slackbot {
+    height: 128px;
+    width: 128px;
+    background: url('..\\images\\common.gif') -1152px 128px;
+    zoom: 0.313;
+}
+
+.jira {
+    height: 128px;
+    width: 128px;
+    background: url('..\\images\\common.gif') 0px 128px;
+    zoom: 0.313;
+}
+
+.conf {
+    height: 128px;
+    width: 128px;
+    background: url('..\\images\\common.gif') -128px 128px;
+    zoom: 0.313;
+}
+
+.github {
+    height: 128px;
+    width: 128px;
+    background: url('..\\images\\common.gif') -256px 128px;
+    zoom: 0.313;
+}
+
+.documen {
+    height: 128px;
+    width: 128px;
+    background: url('..\\images\\common.gif') -381px 128px;
+    zoom: 0.313;
+}
