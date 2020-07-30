@@ -3,7 +3,7 @@
 if ( navigator.serviceWorker ) {
 
   // Register the SW
-  navigator.serviceWorker.register('/sw3.js')
+  navigator.serviceWorker.register('./sw3.js')
   
     .then(function(registration){
       console.log(registration);
