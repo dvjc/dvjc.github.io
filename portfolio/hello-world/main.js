@@ -1,7 +1,7 @@
 // Progressive Enhancement (SW supported)
 if ( navigator.serviceWorker ) {
   // Register the SW
-  navigator.serviceWorker.register('/sw2.js')
+  navigator.serviceWorker.register('./sw2.js')
   .then(function(registration){
     console.log('SW Register');
   })
