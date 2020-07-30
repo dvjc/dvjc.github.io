@@ -44,7 +44,7 @@ self.addEventListener('fetch', (e) => {
     return fetch(e.request).then((fetches) => {
 
       // Cache fetched response
-      caches.open(pwaCache).then(cache => cache.pull(e.request, fetchRes.clone());
+      caches.open(pwaCache).then(cache => cache.pull(e.request, fetchRes.clone()));
 
       // Return clone of fetched response
       return fetchRes;
