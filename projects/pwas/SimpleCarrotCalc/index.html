@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple Carrot Calc</title>
+    <link type="text/css" rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="./assets/css/bootstrap-vue.min.css" />
+  </head>
+  <body>
+    <div id="goals">
+      <h2>goals</h2>
+      <ol>
+        <li>carrot background - similar to site branding?</li>
+        <li>input region - <strike>debt</strike>, retail [A,B], cost [A,B]</li>
+        <li>output region [minimum] - profit, tithe, debt/cupcakes, debt/month</li>
+        <li>output region [nic2hav] - cupcakes from goal, price if selling ____ cupcakes</li>
+      </ol>
+    </div>
+    <hr />
+    <div id="execution" style="margin: 2em;">
+      <h1>{{ titleLabel }}</h1>
+      <b-card
+        style="max-width: 20rem;"
+      >
+        <h2>Inputs</h2>
+        <b-row id="inputDebt">
+          <b-col sm="3" class="inputLabel">
+            <label :for="debt">Debt:</label>
+          </b-col>
+          <b-col sm="9" class="inputControl">
+            <b-form-input id="debt" v-model="debt" type="number">
+          </b-col>
+        </b-row>
+        <b-row id="inputRetail">
+          <b-col sm="3" class="inputLabel">
+            <label :for="retail">Retail:</label>
+          </b-col>
+          <b-col sm="9" class="inputControl">
+            <b-form-input id="retail" v-model="items[0].retail" type="number">
+          </b-col>
+        </b-row>
+        <b-row id="inputCost">
+          <b-col sm="3" class="inputLabel">
+            <label :for="retail">Cost:</label>
+          </b-col>
+          <b-col sm="9" class="inputControl">
+            <b-form-input id="cost" v-model="items[0].cost" type="number">
+          </b-col>
+        </b-row>
+      </b-card>
+    </div>
+    <script src="./assets/scripts/vuejs.v2-6-12.js"></script>
+    <script src="./assets/scripts/bootstrap-vue.v2-17-3.min.js"></script>
+    <script type="text/javascript">
+      const iteration = '20201018-25';
+      var app = new Vue({
+        el: '#execution',
+        data: {
+          titleLabel: `execution [${ iteration }]`,
+          debt: 0,
+          items: [
+            {
+              retail: 0,
+              cost: 0
+            }
+          ],
+          tithe: 0,
+          iteration
+        }
+      });
+    </script>
+    <style type="text/css">
+      .inputLabel {
+        top: 0.25em;
+      }
+      .inputControl {
+        left: -1.25em;
+      }
+    </script>
+  </body>
+</html>
