@@ -1,3 +1,12 @@
+let debt = 23000;
+let monthlyPayment = 175;
+let items = [
+  {
+    units: 12,
+    retail: 30,
+    cost: 0.6
+  }
+];
 
 const profit = (items) => {
   let p = 0;
@@ -25,7 +34,7 @@ const singleCupcakeUnit = (items) => {
     const r = items[0].retail;
     const u = items[0].units;
     const t = tithe(items);
-    s = (c == 0 || u == 0) ? 0 : ((( r - t ) / u) - c) * u;
+    s = (c == 0 || u == 0) ? 0 : ((( r - t ) / u) - c);
   }
   return s;
 };
@@ -54,3 +63,23 @@ const moneyFormat = (value) => {
   }
   return m;
 };
+
+var vm = new Vue({
+  el: '#sccApplication',
+  data: {
+    titleLabel: `Simply Carrot Calculator`,
+    labelWidth: 6,
+    inputControlWidth: 6,
+    outputControlWidth: 5,
+    debt,
+    monthlyPayment,
+    items
+  },
+  methods: {
+    profit,
+    tithe,
+    singleCupcakeUnit,
+    cupcakeTransform,
+    moneyFormat
+  }
+      });
