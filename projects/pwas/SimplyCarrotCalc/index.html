@@ -10,7 +10,7 @@
       <h2>goals</h2>
       <ol>
         <li>carrot background - similar to site branding?</li>
-        <li>input region - <strike>debt</strike>, retail [A,B], cost [A,B]</li>
+        <li>input region - <strike>debt</strike>, retail [<strike>A</strike>,B], cost [<strike>A</strike>,B]</li>
         <li>output region [minimum] - profit, tithe, debt/cupcakes, debt/month</li>
         <li>output region [nic2hav] - cupcakes from goal, price if selling ____ cupcakes</li>
       </ol>
@@ -23,27 +23,57 @@
       >
         <h2>Inputs</h2>
         <b-row id="inputDebt">
-          <b-col sm="3" class="inputLabel">
-            <label :for="debt">Debt:</label>
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Debt:</label>
           </b-col>
-          <b-col sm="9" class="inputControl">
-            <b-form-input id="debt" v-model="debt" type="number">
+          <b-col :sm="`${ inputControlWidth }`" class="inputControl">
+            <b-form-input v-model="debt" type="number">
           </b-col>
         </b-row>
         <b-row id="inputRetail">
-          <b-col sm="3" class="inputLabel">
-            <label :for="retail">Retail:</label>
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Retail:</label>
           </b-col>
-          <b-col sm="9" class="inputControl">
-            <b-form-input id="retail" v-model="items[0].retail" type="number">
+          <b-col :sm="`${ inputControlWidth }`" class="inputControl">
+            <b-form-input v-model="items[0].retail" type="number">
           </b-col>
         </b-row>
         <b-row id="inputCost">
-          <b-col sm="3" class="inputLabel">
-            <label :for="retail">Cost:</label>
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Cost:</label>
           </b-col>
-          <b-col sm="9" class="inputControl">
-            <b-form-input id="cost" v-model="items[0].cost" type="number">
+          <b-col :sm="`${ inputControlWidth }`" class="inputControl">
+            <b-form-input v-model="items[0].cost" type="number">
+          </b-col>
+        </b-row>
+      </b-card>
+      <br />
+      <b-card
+        style="max-width: 20rem;"
+      >
+        <h2>Outputs</h2>
+        <b-row id="outputProfit">
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Profit:</label>
+          </b-col>
+          <b-col :sm="`${ outputControlWidth }`" class="outputControl">
+            <div class="mt-2">{{ moneyFormat(profit(items)) }}</div>
+          </b-col>
+        </b-row>
+        <b-row id="outputProfit">
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Tithe:</label>
+          </b-col>
+          <b-col :sm="`${ outputControlWidth }`" class="outputControl">
+            <div class="mt-2">{{ moneyFormat(tithe(items)) }}</div>
+          </b-col>
+        </b-row>
+        <b-row id="outputCakes">
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Cupcakes / Debt:</label>
+          </b-col>
+          <b-col :sm="`${ outputControlWidth }`" class="outputControl">
+            <div class="mt-2">{{ cupcakeTransform(debt, items) }}</div>
           </b-col>
         </b-row>
       </b-card>
@@ -51,29 +81,94 @@
     <script src="./assets/scripts/vuejs.v2-6-12.js"></script>
     <script src="./assets/scripts/bootstrap-vue.v2-17-3.min.js"></script>
     <script type="text/javascript">
-      const iteration = '20201018-25';
-      var app = new Vue({
+      let profit = (items) => {
+        let p = 0;
+        if ( items.length > 0 ) {
+          p = items[0].cost == 0 ? 0 : items[0].retail / items[0].cost;
+        }
+        return p;
+      };
+      let tithe = (items) => {
+        let t = 0;
+        if ( items.length > 0 ){
+          t = items[0].retail == 0 ? 0 : 0.1 * items[0].retail;
+        }
+        return t;
+      };
+      let singleCupcakeUnit = (items) => {
+        let s = 0;
+        if ( items.length > 0 ) {
+          const c = items[0].cost;
+          const r = items[0].retail;
+          const t = tithe(items);
+          s = c == 0 ? 0 : (r - c - t);
+        }
+        return s;
+      };
+      let cupcakeTransform = (debt, items) => {
+        let ct = 0;
+        if ( items.length > 0 ) {
+          const s = singleCupcakeUnit(items);
+          ct = s == 0 ? 'infinite' : Math.round(0.5 + (debt / s),0);
+        }
+        let suffix = ct == 1 ? "" : "s";
+        ct = `${ ct } cupcake${ suffix }`;
+        return ct;
+      };
+      let moneyFormat = (value) => {
+        let m = 0;
+        if (!isNaN(m)){
+          m = Math.round(100*value,0)/100;
+          if ( m.toString().indexOf(".")<0 ) {
+            m = m + ".00";
+          } else if ( m.toString().split(".")[1].length == 1) {
+            m = m + "0";
+          }
+          m = "$ " + m;
+        }
+        return m;
+      };
+    </script>
+    <script type="text/javascript">
+      const iteration = '20201018-72';
+      let debt = 23000;
+      let items = [
+            {
+              retail: 30,
+              cost: 13
+            }
+          ];
+      var vm = new Vue({
         el: '#execution',
         data: {
           titleLabel: `execution [${ iteration }]`,
-          debt: 0,
-          items: [
-            {
-              retail: 0,
-              cost: 0
-            }
-          ],
-          tithe: 0,
+          labelWidth: 6,
+          inputControlWidth: 6,
+          outputControlWidth: 4,
+          debt,
+          items,
           iteration
+        },
+        methods: {
+          profit,
+          tithe,
+          singleCupcakeUnit,
+          cupcakeTransform,
+          moneyFormat
         }
       });
     </script>
     <style type="text/css">
-      .inputLabel {
-        top: 0.25em;
+      .labelLabel {
+        top: 0.5em;
       }
       .inputControl {
         left: -1.25em;
+      }
+      .outputControl {
+        left: -0.5em;
+        border-style: none none dashed none;
+        border-width: 0.125em;
       }
     </script>
   </body>
