@@ -84,7 +84,7 @@
       let profit = (items) => {
         let p = 0;
         if ( items.length > 0 ) {
-          p = items[0].cost == 0 ? 0 : items[0].retail / items[0].cost;
+          p = items[0].cost == 0 ? 0 : items[0].retail - items[0].cost;
         }
         return p;
       };
