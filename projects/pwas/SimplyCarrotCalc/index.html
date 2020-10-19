@@ -19,7 +19,7 @@
     <div id="execution" style="margin: 2em;">
       <h1>{{ titleLabel }}</h1>
       <b-card
-        style="max-width: 20rem;"
+        :style="`max-width: ${ bCardMaxWidth }rem;`"
       >
         <h2>Inputs</h2>
         <b-row id="inputDebt">
@@ -32,15 +32,23 @@
         </b-row>
         <b-row id="inputRetail">
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
-            <label>Retail:</label>
+            <label>Retail Price:</label>
           </b-col>
           <b-col :sm="`${ inputControlWidth }`" class="inputControl">
             <b-form-input v-model="items[0].retail" type="number">
           </b-col>
         </b-row>
+        <b-row id="inputUnits">
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Cupcakes:</label>
+          </b-col>
+          <b-col :sm="`${ inputControlWidth }`" class="inputControl">
+            <b-form-input v-model="items[0].units" type="number">
+          </b-col>
+        </b-row>
         <b-row id="inputCost">
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
-            <label>Cost:</label>
+            <label>Cost / Cupcake:</label>
           </b-col>
           <b-col :sm="`${ inputControlWidth }`" class="inputControl">
             <b-form-input v-model="items[0].cost" type="number">
@@ -49,7 +57,7 @@
       </b-card>
       <br />
       <b-card
-        style="max-width: 20rem;"
+        :style="`max-width: ${ bCardMaxWidth }rem;`"
       >
         <h2>Outputs</h2>
         <b-row id="outputProfit">
@@ -84,7 +92,10 @@
       let profit = (items) => {
         let p = 0;
         if ( items.length > 0 ) {
-          p = items[0].cost == 0 ? 0 : items[0].retail - items[0].cost;
+          const c = items[0].cost;
+          const r = items[0].retail;
+          const u = items[0].units;
+          p = (c == 0 || u == 0) ? 0 : ((r / u) - c) * u;
         }
         return p;
       };
@@ -100,8 +111,9 @@
         if ( items.length > 0 ) {
           const c = items[0].cost;
           const r = items[0].retail;
+          const u = items[0].units;
           const t = tithe(items);
-          s = c == 0 ? 0 : (r - c - t);
+          s = (c == 0 || u == 0) ? 0 : ((( r - t ) / u) - c) * u;
         }
         return s;
       };
@@ -130,24 +142,24 @@
       };
     </script>
     <script type="text/javascript">
-      const iteration = '20201018-73';
       let debt = 23000;
       let items = [
             {
+              units: 12,
               retail: 30,
-              cost: 13
+              cost: 0.6
             }
           ];
       var vm = new Vue({
         el: '#execution',
         data: {
-          titleLabel: `execution [${ iteration }]`,
+          titleLabel: `Simply Carrot Calculator`,
           labelWidth: 6,
           inputControlWidth: 6,
-          outputControlWidth: 4,
+          outputControlWidth: 5,
+          bCardMaxWidth: 22,
           debt,
-          items,
-          iteration
+          items
         },
         methods: {
           profit,
