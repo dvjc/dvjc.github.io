@@ -9,20 +9,18 @@
     <div id="goals">
       <h2>goals</h2>
       <ol>
-        <li>carrot background - similar to site branding?</li>
+        <li><strike>carrot background - similar to site branding?</strike></li>
         <li>input region - <strike>debt</strike>, retail [<strike>A</strike>,B], cost [<strike>A</strike>,B]</li>
-        <li>output region [minimum] - <strike>profit</strike>, <strike>tithe</strike>, <strike>debt/cupcakes</strike>, debt/month</li>
+        <li>output region [minimum] - <strike>profit</strike>, <strike>tithe</strike>, <strike>debt/cupcakes</strike>, <strike>debt/month</strike></li>
         <li>output region [nic2hav] - cupcakes from goal, price if selling ____ cupcakes</li>
       </ol>
     </div>
     <hr />
-    <div id="execution" style="margin: 2em;">
-      <h1>{{ titleLabel }}</h1>
-      <b-card
-        :style="`max-width: ${ bCardMaxWidth }rem;`"
-      >
+    <div id="sccApplication" class="sccWrapper">
+      <h1 class="sccWrapperTitle">{{ titleLabel }}</h1>
+      <b-card class="cardStyle">
         <h2>Inputs</h2>
-        <b-row id="inputDebt">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Debt:</label>
           </b-col>
@@ -30,7 +28,15 @@
             <b-form-input v-model="debt" type="number">
           </b-col>
         </b-row>
-        <b-row id="inputRetail">
+        <b-row>
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Monthly Payment:</label>
+          </b-col>
+          <b-col :sm="`${ inputControlWidth }`" class="inputControl">
+            <b-form-input v-model="monthlyPayment" type="number">
+          </b-col>
+        </b-row>
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Retail Price:</label>
           </b-col>
@@ -38,7 +44,7 @@
             <b-form-input v-model="items[0].retail" type="number">
           </b-col>
         </b-row>
-        <b-row id="inputUnits">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Cupcakes:</label>
           </b-col>
@@ -46,7 +52,7 @@
             <b-form-input v-model="items[0].units" type="number">
           </b-col>
         </b-row>
-        <b-row id="inputCost">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Cost / Cupcake:</label>
           </b-col>
@@ -56,11 +62,9 @@
         </b-row>
       </b-card>
       <br />
-      <b-card
-        :style="`max-width: ${ bCardMaxWidth }rem;`"
-      >
+      <b-card class="cardStyle">
         <h2>Outputs</h2>
-        <b-row id="outputProfit">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Profit:</label>
           </b-col>
@@ -68,7 +72,7 @@
             <div class="mt-2">{{ moneyFormat(profit(items)) }}</div>
           </b-col>
         </b-row>
-        <b-row id="outputProfit">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Tithe:</label>
           </b-col>
@@ -76,7 +80,7 @@
             <div class="mt-2">{{ moneyFormat(tithe(items)) }}</div>
           </b-col>
         </b-row>
-        <b-row id="outputCakes">
+        <b-row>
           <b-col :sm="`${ labelWidth }`" class="labelLabel">
             <label>Cupcakes / Debt:</label>
           </b-col>
@@ -84,65 +88,23 @@
             <div class="mt-2">{{ cupcakeTransform(debt, items) }}</div>
           </b-col>
         </b-row>
+        <b-row>
+          <b-col :sm="`${ labelWidth }`" class="labelLabel">
+            <label>Cupcakes / Month:</label>
+          </b-col>
+          <b-col :sm="`${ outputControlWidth }`" class="outputControl">
+            <div class="mt-2">{{ cupcakeTransform(monthlyPayment, items) }}</div>
+          </b-col>
+        </b-row>
       </b-card>
+      <br />
     </div>
     <script src="./assets/scripts/vuejs.v2-6-12.js"></script>
     <script src="./assets/scripts/bootstrap-vue.v2-17-3.min.js"></script>
-    <script type="text/javascript">
-      let profit = (items) => {
-        let p = 0;
-        if ( items.length > 0 ) {
-          const c = items[0].cost;
-          const r = items[0].retail;
-          const u = items[0].units;
-          p = (c == 0 || u == 0) ? 0 : ((r / u) - c) * u;
-        }
-        return p;
-      };
-      let tithe = (items) => {
-        let t = 0;
-        if ( items.length > 0 ){
-          t = items[0].retail == 0 ? 0 : 0.1 * items[0].retail;
-        }
-        return t;
-      };
-      let singleCupcakeUnit = (items) => {
-        let s = 0;
-        if ( items.length > 0 ) {
-          const c = items[0].cost;
-          const r = items[0].retail;
-          const u = items[0].units;
-          const t = tithe(items);
-          s = (c == 0 || u == 0) ? 0 : ((( r - t ) / u) - c) * u;
-        }
-        return s;
-      };
-      let cupcakeTransform = (debt, items) => {
-        let ct = 0;
-        if ( items.length > 0 ) {
-          const s = singleCupcakeUnit(items);
-          ct = s == 0 ? 'infinite' : Math.round(0.5 + (debt / s),0);
-        }
-        let suffix = ct == 1 ? "" : "s";
-        ct = `${ ct } cupcake${ suffix }`;
-        return ct;
-      };
-      let moneyFormat = (value) => {
-        let m = 0;
-        if (!isNaN(m)){
-          m = Math.round(100*value,0)/100;
-          if ( m.toString().indexOf(".")<0 ) {
-            m = m + ".00";
-          } else if ( m.toString().split(".")[1].length == 1) {
-            m = m + "0";
-          }
-          m = "$ " + m;
-        }
-        return m;
-      };
-    </script>
+    <script src="./assets/scripts/scc.js"></script>
     <script type="text/javascript">
       let debt = 23000;
+      let monthlyPayment = 175;
       let items = [
             {
               units: 12,
@@ -151,14 +113,14 @@
             }
           ];
       var vm = new Vue({
-        el: '#execution',
+        el: '#sccApplication',
         data: {
           titleLabel: `Simply Carrot Calculator`,
           labelWidth: 6,
           inputControlWidth: 6,
           outputControlWidth: 5,
-          bCardMaxWidth: 22,
           debt,
+          monthlyPayment,
           items
         },
         methods: {
@@ -181,6 +143,28 @@
         left: -0.5em;
         border-style: none none dashed none;
         border-width: 0.125em;
+      }
+      .cardStyle {
+        max-width: 22rem;
+        left: 4em;
+        text-align:left;
+        border-style: solid;
+        border-width: 0.125em;
+        border-radius:1.0em;
+        border-color: black;
+      }
+      .sccWrapper {
+        padding-top: 1em;
+        margin: 2em;
+        background-color: orange;
+        width: 30em;
+        text-align:center;
+        border-style: solid;
+        border-width: 0.125em;
+        border-radius:1.0em;
+      }
+      .sccWrapperTitle {
+        color: white;
       }
     </script>
   </body>
