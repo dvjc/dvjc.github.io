@@ -124,6 +124,9 @@ var home = {
       let haikus = [
         "It's not easier/To see the consequence of/Regretted choices",
         "The bitten apple:/Noone listens about the/remaining worm half",
+        "The bigger they are/The harder they fall on you/Keep dodging giants!",
+        "Silence is golden/And wisdom is silvery/There go the pennies!",
+        "The first that smelt it/clearly they did not deal it/With speaking lay blame",
       ];
 
       let selectedHaiku = haikus[Math.floor(0.5 + ((haikus.length-1) * Math.random()))].split('/');
