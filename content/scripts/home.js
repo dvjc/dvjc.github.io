@@ -121,9 +121,18 @@ var home = {
   }, AddHaiku: function(){
     var randomHaiku = $('#randomHaiku');
     if (!!randomHaiku){
-      randomHaiku.append("<div>It's not easier</div>");
-      randomHaiku.append("<div>To see the consequence of</div>");
-      randomHaiku.append("<div>Regretted choices</div>");
+      let haikus = [
+        "It's not easier/To see the consequence of/Regretted choices",
+        "The bitten apple:/Noone listens about the/remaining worm half",
+      ];
+
+      let selectedHaiku = haikus[Math.floor(0.5 + ((haikus.length-1) * Math.random()))].split('/');
+      let top = selectedHaiku.length > 0 ? selectedHaiku[0] : '';
+      let mid = selectedHaiku.length > 1 ? selectedHaiku[1] : '';
+      let bot = selectedHaiku.length > 2 ? selectedHaiku[2] : '';
+      randomHaiku.append(top);
+      randomHaiku.append(mid);
+      randomHaiku.append(bot);
     }
   }
 };
