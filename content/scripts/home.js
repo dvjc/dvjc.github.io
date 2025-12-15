@@ -130,9 +130,9 @@ var home = {
       let top = selectedHaiku.length > 0 ? selectedHaiku[0] : '';
       let mid = selectedHaiku.length > 1 ? selectedHaiku[1] : '';
       let bot = selectedHaiku.length > 2 ? selectedHaiku[2] : '';
-      randomHaiku.append(top);
-      randomHaiku.append(mid);
-      randomHaiku.append(bot);
+      randomHaiku.append(`<div>${top}</div>`);
+      randomHaiku.append(`<div>${mid}</div>`);
+      randomHaiku.append(`<div>${bot}</div>`);
     }
   }
 };
