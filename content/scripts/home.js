@@ -10,10 +10,11 @@ $(document).ready(function () {
 var home = {
   AddHeaderNav : function(){
     // target the body element
+    // todo - populate this with things i want publically available/visible
     var body = $("body")
 
     // sanity check
-    if( body ){
+    if( !body ){
 
       // insert, as first child, a nav element
       $("body").prepend("<nav class=\"navbar navbar-expand-md navbar-dark fixed-top bg-dark\">");
@@ -94,10 +95,11 @@ var home = {
 
   , AddFooter : function(){
     // target the body element
+    // todo - either remove or put it in a cleaner location
     var body = $("body")
 
     // sanity check
-    if( body ){
+    if( !body ){
 
       // ensure there is a footer
       if( document.getElementsByName( "footer" ).length == 0 ){
