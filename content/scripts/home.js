@@ -6,6 +6,8 @@ $(document).ready(function () {
     //        right now it adds a footer no matter what
     //        should detect the footer and, if it does not exist, add it
     home.AddFooter();
+
+    home.AddHaiku();
 });
 var home = {
   AddHeaderNav : function(){
@@ -115,6 +117,13 @@ var home = {
       if( $("footer").children().length==0 ){
         $("footer").append("<p>footer -> Words <- retoof</p>");
       }
+    }
+  }, AddHaiku: function(){
+    var randomHaiku = $('#randomHaiku');
+    if (!!randomHaiku){
+      randomHaiku.append("<div>It's not easier</div>");
+      randomHaiku.append("<div>To see the consequence of</div>");
+      randomHaiku.append("<div>Regretted choices</div>");
     }
   }
 };
